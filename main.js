@@ -44,4 +44,17 @@ ipcMain.handle('load-note', async () => {
         return fs.readFileSync(filePath, 'utf-8');
     }
     return '';
+   
 });
+ ipcMain.handle('save-as', async (event, text) => {
+    const result = await dialog.showSaveDialog({
+        defaultPath: 'my_note.txt',
+        filters: [{ name: 'Text Files', extensions: ['txt'] }]
+    });
+    if (result.canceled ){
+        return { success: false};
+    }
+    fs.writeFileSync(result.filePath, text, 'utf-8');
+    return { success: true , filepath: result.filePath };
+}); 
+
