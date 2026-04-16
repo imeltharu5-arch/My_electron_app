@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow,dialog, ipcMain } = require('electron');
 
 app.disableHardwareAcceleration();
 
@@ -44,17 +44,16 @@ ipcMain.handle('load-note', async () => {
         return fs.readFileSync(filePath, 'utf-8');
     }
     return '';
-   
 });
- ipcMain.handle('save-as', async (event, text) => {
+ipcMain.handle('save-as', async (event, text) => {
     const result = await dialog.showSaveDialog({
-        defaultPath: 'my_note.txt',
-        filters: [{ name: 'Text Files', extensions: ['txt'] }]
-    });
-    if (result.canceled ){
-        return { success: false};
-    }
-    fs.writeFileSync(result.filePath, text, 'utf-8');
-    return { success: true , filepath: result.filePath };
-}); 
-
+        defaultPath:'mynote.txt',
+        filters:[
+            {name:'Text Files',extensions:['txt']}]
+       });
+       if (result.canceled) {
+            return { success: false};
+        }
+        fs.writeFileSync(result.filePath, text, 'utf-8');
+        return { success: true, filePath: result.filePath };
+});
