@@ -142,7 +142,7 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });
 
-// ── IPC Handlers — all outside createWindow so they register exactly once ─────
+// IPC Handlers — all outside createWindow so they register exactly once
 
 ipcMain.handle('set-unsaved-changes', (_event, unsaved) => {
     hasUnsavedChanges = unsaved;
