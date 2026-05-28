@@ -11,5 +11,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getSettings:()=>ipcRenderer.invoke('get-settings'),
     saveSettings:(settings) =>ipcRenderer.invoke('save-settings', settings),
     showNotification: (title, body) => ipcRenderer.send('show-notification', { title, body }),
-    exportNotePDF: (data) => ipcRenderer.invoke('export-note-pdf', data)
+    exportNotePDF: (data) => ipcRenderer.invoke('export-note-pdf', data),
 });
