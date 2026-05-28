@@ -19,7 +19,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         darkModeBtn.textContent = enable ? 'Light Mode' : 'Dark Mode';
     }
 
-    // ── Font size ──────────────────────────────────────────────────────────────
     let currentFontSize = 16;
 
     function applyFontSize(size) {
@@ -27,12 +26,11 @@ window.addEventListener('DOMContentLoaded', async () => {
         textarea.style.fontSize = `${currentFontSize}px`;
     }
 
-    // ── Load settings and apply on startup ────────────────────────────────────
     const settings = await window.electronAPI.getSettings();
     applyFontSize(settings.fontSize || 16);
     applyDarkMode(settings.darkMode || false);
 
-    // ── Word / character count ─────────────────────────────────────────────────
+ 
     function updateWordCount() {
         const text = textarea.value;
         const characters = text.length;
@@ -41,13 +39,12 @@ window.addEventListener('DOMContentLoaded', async () => {
         wordCountEl.textContent = `Words: ${words} | Characters: ${characters}`;
     }
 
-    // ── State ──────────────────────────────────────────────────────────────────
     let notes            = [];
     let currentNoteId    = null;
     let lastSavedContent = '';
     let debounceTimer    = null;
 
-    // ── Helpers ────────────────────────────────────────────────────────────────
+  
     function escapeHtml(str) {
         return String(str)
             .replace(/&/g, '&amp;')
@@ -55,8 +52,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
     }
-
-    // ── Sidebar ────────────────────────────────────────────────────────────────
+    
     // FIX 1: accept `filter` param with default ''
     // FIX 2: iterate over `filtered`, not `notes`
     function renderNotesList(filter = '') {
