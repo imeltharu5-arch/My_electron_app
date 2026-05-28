@@ -1,5 +1,4 @@
 const { contextBridge, ipcRenderer } = require('electron');
-
 contextBridge.exposeInMainWorld('electronAPI', {
     saveAs: (text) => ipcRenderer.invoke('save-as', text),
     newNote: ()=>ipcRenderer.invoke('new-note'),
@@ -12,5 +11,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getSettings:()=>ipcRenderer.invoke('get-settings'),
     saveSettings:(settings) =>ipcRenderer.invoke('save-settings', settings),
     showNotification: (title, body) => ipcRenderer.send('show-notification', { title, body }),
-    exportNotePDF: (data) => ipcRenderer.invoke('export-note-pdf', data),
+    exportNotePDF: (data) => ipcRenderer.invoke('export-note-pdf', data)
 });
