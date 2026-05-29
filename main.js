@@ -50,7 +50,7 @@ function createWindow() {
         }
     });
 
-    
+
     win.webContents.on('context-menu', (event, params) => {
     const menu = new Menu();
 
@@ -87,7 +87,7 @@ function createWindow() {
 
     ses.setSpellCheckerLanguages([
         'en-US'
-    ]);
+    ]);//until here spelling checker
 
     win.on('close', (event) => {
         event.preventDefault();
