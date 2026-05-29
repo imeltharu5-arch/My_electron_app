@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Menu, Tray, Notification } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Menu,  MenuItem, Tray, Notification } = require('electron');
 
 app.disableHardwareAcceleration();
 const path = require('node:path');
@@ -8,6 +8,7 @@ const fs   = require('node:fs');
 const notesFilePath = path.join(app.getPath('userData'), 'notes.json');
 const settingsFilePath = path.join(app.getPath('userData'), 'settings.json');
 let hasUnsavedChanges = false;
+
 
 
 function readNotes() {
@@ -48,8 +49,42 @@ function createWindow() {
             nodeIntegration: false
         }
     });
+    win.webContents.on('context-menu', (event, params) => {
+    const menu = new Menu();
+
+    // Spelling suggestions
+    for (const suggestion of params.dictionarySuggestions) {
+        menu.append(new MenuItem({
+            label: suggestion,
+            click: () => win.webContents.replaceMisspelling(suggestion)
+        }));
+    }
+
+    // Add to dictionary
+    if (params.misspelledWord) {
+        menu.append(
+            new MenuItem({
+                label: 'Add to Dictionary',
+                click: () => {
+                    win.webContents.session.addWordToSpellCheckerDictionary(
+                        params.misspelledWord
+                    );
+                }
+            })
+        );
+    }
+
+    menu.popup();
+});
 
     win.loadFile('index.html');
+    const ses = win.webContents.session;
+
+    ses.setSpellCheckerEnabled(true);
+
+    ses.setSpellCheckerLanguages([
+        'en-US'
+    ]);
 
     win.on('close', (event) => {
         event.preventDefault();
@@ -58,6 +93,7 @@ function createWindow() {
 
     return win;
 }
+
 
 app.whenReady().then(() => {
     createWindow();
