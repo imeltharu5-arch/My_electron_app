@@ -49,6 +49,8 @@ function createWindow() {
             nodeIntegration: false
         }
     });
+
+    
     win.webContents.on('context-menu', (event, params) => {
     const menu = new Menu();
 
@@ -78,6 +80,7 @@ function createWindow() {
 });
 
     win.loadFile('index.html');
+// Enable spell checking with US English dictionary
     const ses = win.webContents.session;
 
     ses.setSpellCheckerEnabled(true);
